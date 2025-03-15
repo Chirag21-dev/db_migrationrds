@@ -32,3 +32,18 @@ resource "aws_db_subnet_group" "subnet_group" {
     Name = "db_subnet_group"
   }
 }
+
+resource "aws_db_instance" "rds" {
+  allocated_storage    = var.allocated_storage
+  storage_type         = "gp2"
+  db_name              = var.db_name
+  engine               = var.engine
+  engine_version       = var.engine_version
+  instance_class       = var.instance_class
+  username             = var.username
+  password             = var.password
+  publicly_accessible  = true
+  skip_final_snapshot  = true
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  db_subnet_group_name = aws_db_subnet_group.subnet_group.name
+}
